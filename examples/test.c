@@ -1,7 +1,5 @@
 #include "picoCrystal.h"
 
-//#define debug 
-
 int main() {
     struct picoCrystal_config_t lcd = {
         .e = 17,
