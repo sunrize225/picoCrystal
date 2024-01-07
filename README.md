@@ -9,6 +9,7 @@ single header C library for using LCD displays with Pi Pico
 2. Add `#include "picoCrystal.h"` to the file you want to use it in.
 3. Create a `struct picoCrystal_config_t` to configure your GPIO numbers and LCD type.
 The struct has the following attriubtes and values
+
 | Attribute       | Possible Values                                    |
 |----------------:|----------------------------------------------------|
 | .e (enable pin) | a gpio pin number                                  |
