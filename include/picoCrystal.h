@@ -15,7 +15,7 @@
 #define picoCrystal_LINES_1 0x00
 #define picoCrystal_LINES_2 0x08
 
-#define picoCrystal_DISPLAY  0x08 // Use this command to control display/cursor
+#define picoCrystal_DISPLAY  0x08 // Use this command to toggle display/cursor
 #define picoCrystal_DISPLAY_ON  0x04
 #define picoCrystal_DISPLAY_OFF 0x00
 #define picoCrystal_CURSOR_ON 0x02
@@ -28,6 +28,11 @@
 #define picoCrystal_ENTRY_LEFT 0x02
 #define picoCrystal_ENTRY_INC 0x01
 #define picoCrystal_ENTRY_DEC 0x00
+
+#define picoCrystal_SHIFT_CURSOR 0x10 // use this command to shift cursor
+#define picoCrystal_SHIFT_DISPLAY 0x18 // use this command to shift display
+#define picoCrystal_SHIFT_RIGHT 0x04
+#define picoCrystal_SHIFT_LEFT 0x00
 
 struct picoCrystal_config_t {
     uint8_t e;
