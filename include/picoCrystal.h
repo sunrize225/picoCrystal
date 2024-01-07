@@ -10,6 +10,10 @@
 #define picoCrystal_CLRSCR    0x01
 #define picoCrystal_MODE_4BIT 0x02
 #define picoCrystal_INITALIZE 0x03
+#define picoCrystal_DDRAMADDR 0x80
+
+#define picoCrystal_row_1 0x00
+#define picoCrystal_row_2 0x40
 
 #define picoCrystal_CONFIG 0x20 // Use this command to change # lines
 #define picoCrystal_LINES_1 0x00
@@ -56,5 +60,9 @@ void picoCrystal_write_data(const struct picoCrystal_config_t *pc, uint8_t data,
 void picoCrystal_write_text(const struct picoCrystal_config_t *pc, const char* str, uint8_t len);
 
 int picoCrystal_display_init(const struct picoCrystal_config_t *pc);
+
+void picoCrystal_display_clear(const struct picoCrystal_config_t *pc);
+
+int picoCrystal_move_cursor(const struct picoCrystal_config_t *pc, uint8_t row, uint8_t col);
 
 #endif

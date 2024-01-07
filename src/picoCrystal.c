@@ -162,6 +162,14 @@ int picoCrystal_display_init(const struct picoCrystal_config_t *pc) {
 /* clear lcd, set cursor to home position*/
 void picoCrystal_display_clear(const struct picoCrystal_config_t *pc) {
     picoCrystal_write_data(pc, picoCrystal_CLRSCR, 0);
-    sleep_us(picoCrystal_delay);
+}
 
+/*
+Move cursor to a certain location. (index starts at zero).
+For single row displays, row should always be zero
+*/
+int picoCrystal_move_cursor(const struct picoCrystal_config_t *pc, uint8_t row, uint8_t col) {
+    if(pc->num_lines == picoCrystal_LINES_1 || row == 0) 
+    { row = picoCrystal_row_1; } else { row = picoCrystal_row_2; }
+    picoCrystal_write_data(pc, picoCrystal_DDRAMADDR | (row + col) , 0);
 }
