@@ -4,11 +4,30 @@
 
 
 #define picoCrystal_UNUSED_PIN -1
-#define picoCrystal_MODE_8BIT 8 // 8-bit mode is default ... not an LCD command
+#define picoCrystal_MODE_8BIT 8
 // Command Mapping
+
 #define picoCrystal_CLRSCR    0x01
 #define picoCrystal_MODE_4BIT 0x02
 #define picoCrystal_INITALIZE 0x03
+
+#define picoCrystal_CONFIG 0x20 // Use this command to change # lines
+#define picoCrystal_LINES_1 0x00
+#define picoCrystal_LINES_2 0x08
+
+#define picoCrystal_DISPLAY  0x08 // Use this command to control display/cursor
+#define picoCrystal_DISPLAY_ON  0x04
+#define picoCrystal_DISPLAY_OFF 0x00
+#define picoCrystal_CURSOR_ON 0x02
+#define picoCrystal_CURSOR_OFF 0x00
+#define picoCrystal_BLINK_ON 0x01
+#define picoCrystal_BLINK_OFF 0x00
+
+#define picoCrystal_ENTRY 0x04 // use this command to control entry mode
+#define picoCrystal_ENTRY_RIGHT 0x00
+#define picoCrystal_ENTRY_LEFT 0x02
+#define picoCrystal_ENTRY_INC 0x01
+#define picoCrystal_ENTRY_DEC 0x00
 
 struct picoCrystal_config_t {
     uint8_t e;
@@ -16,6 +35,7 @@ struct picoCrystal_config_t {
     uint8_t rw;
     uint8_t g[8];
     uint8_t mode;
+    uint8_t num_lines;
 };
 
 void picoCrystal_gpio_put_data(const struct picoCrystal_config_t *pc, uint8_t data);

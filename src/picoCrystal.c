@@ -146,15 +146,22 @@ int picoCrystal_display_init(const struct picoCrystal_config_t *pc) {
         sleep_us(picoCrystal_delay);
     }
     
-    picoCrystal_write_data(pc, 0x28, 0); // set # lines, font size
+    picoCrystal_write_data(pc, picoCrystal_CONFIG | pc->num_lines, 0);
     sleep_us(picoCrystal_delay);
 
-    picoCrystal_write_data(pc, 0x0C, 0);
+    picoCrystal_write_data(pc, picoCrystal_DISPLAY | picoCrystal_DISPLAY_ON, 0);
     sleep_us(picoCrystal_delay);
 
-    picoCrystal_write_data(pc, 0x01, 0); // clear screen
+    picoCrystal_write_data(pc, picoCrystal_CLRSCR, 0);
     sleep_us(picoCrystal_delay);
 
-    picoCrystal_write_data(pc, 0x06, 0);
+    picoCrystal_write_data(pc, picoCrystal_ENTRY | picoCrystal_ENTRY_LEFT, 0);
     sleep_us(picoCrystal_delay);
+}
+
+/* clear lcd, set cursor to home position*/
+void picoCrystal_display_clear(const struct picoCrystal_config_t *pc) {
+    picoCrystal_write_data(pc, picoCrystal_CLRSCR, 0);
+    sleep_us(picoCrystal_delay);
+
 }

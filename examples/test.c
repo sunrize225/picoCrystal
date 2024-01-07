@@ -6,7 +6,8 @@ int main() {
         .rs = 16,
         .rw = picoCrystal_UNUSED_PIN,
         .g = {18, 19, 20, 21},
-        .mode = picoCrystal_MODE_4BIT
+        .mode = picoCrystal_MODE_4BIT,
+        .num_lines = picoCrystal_LINES_2
     };
 
     picoCrystal_config_init(&lcd);
