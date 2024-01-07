@@ -3,7 +3,6 @@
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 #define picoCrystal_delay 550
-#define picoCrystal_MODE_8BIT 8
 #define picoCrystal_ERR_INVAL_ARG_VAL 2
 #define picoCrystal_ERR_INVAL_GPIO 3
 
@@ -11,9 +10,8 @@ const int OUT = 1;
 const int IN  = 0;
 
 
-
 /*
-    data is the data to set on the data pins. For 4-bit mode the data should be on the 4 MSBs.
+    data is the nibble to set on the data pins.
 */
 void picoCrystal_gpio_put_data(const struct picoCrystal_config_t *pc, uint8_t data) {
     uint8_t curr, val, len;
@@ -50,6 +48,9 @@ void picoCrystal_err(int err) {
     }
 }
 
+/*
+    Ensures valid struct and initalizes pins. g[0] should be LSB.
+*/
 int picoCrystal_config_init(const struct picoCrystal_config_t *pc) {
     int len;
     if(pc->mode == picoCrystal_MODE_8BIT) {
@@ -60,7 +61,7 @@ int picoCrystal_config_init(const struct picoCrystal_config_t *pc) {
         return picoCrystal_ERR_INVAL_ARG_VAL;
     }
     for(int i=0; i<len; i++) {
-        if(pc->g[i] < 0) { return picoCrystal_ERR_INVAL_GPIO; }
+        if(pc->g[i] < -1) { return picoCrystal_ERR_INVAL_GPIO; } // -1 means unused pin
         gpio_init(pc->g[i]);
         gpio_set_dir(pc->g[i], OUT);
     }
@@ -81,9 +82,13 @@ void picoCrystal_pulse(const struct picoCrystal_config_t *pc) {
     sleep_us(picoCrystal_delay);
 }
 
+/*
+    Send one byte to the LCD.
+    Set ctrl to 0 to send a command, 1 to send a character.
+*/
 void picoCrystal_write_data(const struct picoCrystal_config_t *pc, uint8_t data, uint8_t ctrl) {
     gpio_put(pc->e, 0); // ensure not sending data
-    gpio_put(pc->rs, ctrl); // 0 for cmd 1 for message
+    gpio_put(pc->rs, ctrl); // 0 for cmd; 1 for message
 
     if(pc->mode == picoCrystal_MODE_4BIT) {
         // send higher nibble
@@ -105,6 +110,9 @@ void picoCrystal_write_data(const struct picoCrystal_config_t *pc, uint8_t data,
 
 }
 
+/*
+    Write a string to the LCD at cursor position.
+*/
 void picoCrystal_write_text(const struct picoCrystal_config_t *pc, const char* str, uint8_t len) {
     for(int i=0; i<len; i++) 
     {
@@ -113,12 +121,15 @@ void picoCrystal_write_text(const struct picoCrystal_config_t *pc, const char* s
     }
 }
 
+/*
+    Initalize LCD.
+*/
 int picoCrystal_display_init(const struct picoCrystal_config_t *pc) {
     gpio_put(pc->rs, 0); // low for command 
     gpio_put(pc->e, 0);
 
     
-    picoCrystal_gpio_put_data(pc, picoCrystal_INITALIZE);
+    picoCrystal_gpio_put_data(pc, picoCrystal_INITALIZE); // only send nibble
     
     picoCrystal_pulse(pc);
     sleep_us(picoCrystal_delay);
@@ -129,9 +140,11 @@ int picoCrystal_display_init(const struct picoCrystal_config_t *pc) {
     picoCrystal_pulse(pc);
     sleep_us(picoCrystal_delay);
 
-    picoCrystal_gpio_put_data(pc, picoCrystal_MODE_4BIT);
-    picoCrystal_pulse(pc);
-    sleep_us(picoCrystal_delay);
+    if(pc->mode == picoCrystal_MODE_4BIT) {
+        picoCrystal_gpio_put_data(pc, picoCrystal_MODE_4BIT);
+        picoCrystal_pulse(pc);
+        sleep_us(picoCrystal_delay);
+    }
     
     picoCrystal_write_data(pc, 0x28, 0); // set # lines, font size
     sleep_us(picoCrystal_delay);

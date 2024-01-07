@@ -4,6 +4,7 @@
 
 
 #define picoCrystal_UNUSED_PIN -1
+#define picoCrystal_MODE_8BIT 8 // 8-bit mode is default ... not an LCD command
 // Command Mapping
 #define picoCrystal_CLRSCR    0x01
 #define picoCrystal_MODE_4BIT 0x02
