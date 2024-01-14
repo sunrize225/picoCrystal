@@ -67,4 +67,6 @@ int picoCrystal_move_cursor(const struct picoCrystal_config_t *pc, uint8_t row, 
 
 void picoCrystal_cursor_setting(const struct picoCrystal_config_t *pc, uint8_t show, uint8_t blink);
 
+int picoCrystal_display_shift(const struct picoCrystal_config_t *pc, uint8_t dir);
+
 #endif

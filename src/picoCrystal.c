@@ -5,6 +5,7 @@
 #define picoCrystal_delay 550
 #define picoCrystal_ERR_INVAL_ARG_VAL 2
 #define picoCrystal_ERR_INVAL_GPIO 3
+#define picoCrystal_ERR_NON_BOOL_VAL 4
 
 const int OUT = 1;
 const int IN  = 0;
@@ -45,6 +46,8 @@ void picoCrystal_err(int err) {
         case picoCrystal_ERR_INVAL_GPIO:
             fprintf(stderr, "Invalid GPIO number");
             break;
+        case picoCrystal_ERR_NON_BOOL_VAL:
+            fprintf(stderr, "Non-boolean value provided to boolean parameter");
     }
 }
 
@@ -182,4 +185,15 @@ void picoCrystal_cursor_setting(const struct picoCrystal_config_t *pc, uint8_t s
     { blink = picoCrystal_BLINK_OFF; } else {show = picoCrystal_CURSOR_ON; }
     if(blink) { blink = picoCrystal_BLINK_ON; }
     picoCrystal_write_data(pc, picoCrystal_DISPLAY | picoCrystal_DISPLAY_ON | show | blink, 0);
+}
+
+/*
+Shift text left or right (0 for left / 1 for right)
+*/
+int picoCrystal_display_shift(const struct picoCrystal_config_t *pc, uint8_t dir) {
+    if (dir == 0) { dir = picoCrystal_SHIFT_LEFT; } 
+    else if(dir) {dir = picoCrystal_SHIFT_RIGHT; }
+    else {return picoCrystal_ERR_NON_BOOL_VAL; }
+
+    picoCrystal_write_data(pc, picoCrystal_SHIFT_DISPLAY | dir, 0);
 }
