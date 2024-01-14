@@ -177,9 +177,9 @@ int picoCrystal_move_cursor(const struct picoCrystal_config_t *pc, uint8_t row, 
 /*
 Change whether cursor shows and blinks. 0/1 for show cursor. 0/1 for blink cursor (if show is 1)
 */
-void picoCrystal_cursorSetting(const struct picoCrystal_config_t *pc, uint8_t show, uint8_t blink) {
+void picoCrystal_cursor_setting(const struct picoCrystal_config_t *pc, uint8_t show, uint8_t blink) {
     if(!show) 
     { blink = picoCrystal_BLINK_OFF; } else {show = picoCrystal_CURSOR_ON; }
     if(blink) { blink = picoCrystal_BLINK_ON; }
-    picoCrystal_write_data(pc, picoCrystal_DISPLAY | blink | show, 0);
+    picoCrystal_write_data(pc, picoCrystal_DISPLAY | picoCrystal_DISPLAY_ON | show | blink, 0);
 }

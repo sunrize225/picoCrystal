@@ -17,7 +17,9 @@ int main() {
     picoCrystal_move_cursor(&lcd, 1, 0);
     picoCrystal_write_text(&lcd, "What's up?", 11);
 
-    picoCrystal_write_data(&lcd, picoCrystal_ENTRY | picoCrystal_ENTRY_INC, 0);
+    //picoCrystal_write_data(&lcd, picoCrystal_ENTRY | picoCrystal_ENTRY_INC, 0);
+
+    //picoCrystal_cursor_setting(&lcd, 1, 1);
 
     return 0;
 }
