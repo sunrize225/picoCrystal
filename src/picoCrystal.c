@@ -63,6 +63,10 @@ int picoCrystal_config_init(const struct picoCrystal_config_t *pc) {
     } else {
         return picoCrystal_ERR_INVAL_ARG_VAL;
     }
+
+    if(pc->text_dir != picoCrystal_ENTRY_LEFT || pc->text_dir != picoCrystal_ENTRY_RIGHT) {
+        return picoCrystal_ERR_INVAL_ARG_VAL;
+    }
     for(int i=0; i<len; i++) {
         if(pc->g[i] < -1) { return picoCrystal_ERR_INVAL_GPIO; } // -1 means unused pin
         gpio_init(pc->g[i]);

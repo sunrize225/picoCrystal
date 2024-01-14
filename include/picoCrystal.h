@@ -45,6 +45,7 @@ struct picoCrystal_config_t {
     uint8_t g[8];
     uint8_t mode;
     uint8_t num_lines;
+    uint8_t text_dir;
 };
 
 void picoCrystal_gpio_put_data(const struct picoCrystal_config_t *pc, uint8_t data);
