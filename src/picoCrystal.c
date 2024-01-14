@@ -64,7 +64,7 @@ int picoCrystal_config_init(const struct picoCrystal_config_t *pc) {
         return picoCrystal_ERR_INVAL_ARG_VAL;
     }
 
-    if(pc->text_dir != picoCrystal_ENTRY_LEFT || pc->text_dir != picoCrystal_ENTRY_RIGHT) {
+    if(pc->text_dir != picoCrystal_ENTRY_LEFT && pc->text_dir != picoCrystal_ENTRY_RIGHT) {
         return picoCrystal_ERR_INVAL_ARG_VAL;
     }
     for(int i=0; i<len; i++) {
@@ -162,7 +162,7 @@ int picoCrystal_display_init(const struct picoCrystal_config_t *pc) {
     picoCrystal_write_data(pc, picoCrystal_CLRSCR, 0);
     sleep_us(picoCrystal_delay);
 
-    picoCrystal_write_data(pc, picoCrystal_ENTRY | picoCrystal_ENTRY_LEFT, 0);
+    picoCrystal_write_data(pc, picoCrystal_ENTRY | pc->text_dir, 0);
     sleep_us(picoCrystal_delay);
 }
 
@@ -182,7 +182,7 @@ int picoCrystal_move_cursor(const struct picoCrystal_config_t *pc, uint8_t row, 
 }
 
 /*
-Change whether cursor shows and blinks. 0/1 for show cursor. 0/1 for blink cursor (if show is 1)
+Change whether cursor shows and blinks. 0/1 for show underline cursor. 0/1 for blink cursor
 */
 void picoCrystal_cursor_setting(const struct picoCrystal_config_t *pc, uint8_t show, uint8_t blink) {
     if(!show) 
