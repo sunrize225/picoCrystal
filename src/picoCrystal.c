@@ -201,3 +201,18 @@ int picoCrystal_display_shift(const struct picoCrystal_config_t *pc, uint8_t dir
 
     picoCrystal_write_data(pc, picoCrystal_SHIFT_DISPLAY | dir, 0);
 }
+
+/*
+    Display scrolling text for strings longer than screen. delay is in ms. 
+    line, 0 for line 1, 1 for line 2
+*/
+int picoCrystal_scroll_text(const struct picoCrystal_config_t *pc, const char* str, uint8_t len, uint16_t delay, uint8_t line) {
+    if(line) { picoCrystal_move_cursor(pc, 0, 15); }
+    else { picoCrystal_move_cursor(pc, 1, 15); }
+    for(int i=0; i<len; i++) 
+    {
+        if(str[i] == '\0') { break; }
+        picoCrystal_write_data(pc, str[i], 1); // 1 for message
+        sleep_ms(delay);
+    }
+}

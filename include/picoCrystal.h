@@ -70,4 +70,6 @@ void picoCrystal_cursor_setting(const struct picoCrystal_config_t *pc, uint8_t s
 
 int picoCrystal_display_shift(const struct picoCrystal_config_t *pc, uint8_t dir);
 
+int picoCrystal_scroll_text(const struct picoCrystal_config_t *pc, const char* str, uint8_t len, uint16_t delay, uint8_t line);
+
 #endif
