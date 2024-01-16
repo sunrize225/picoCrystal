@@ -12,7 +12,7 @@ const int IN  = 0;
 
 
 /*
-    data is the nibble to set on the data pins.
+    data is the nibble or byte to set on the data pins.
 */
 void picoCrystal_gpio_put_data(const struct picoCrystal_config_t *pc, uint8_t data) {
     uint8_t curr, val, len;
@@ -22,7 +22,7 @@ void picoCrystal_gpio_put_data(const struct picoCrystal_config_t *pc, uint8_t da
     } else {
         len = 8;
     }
-    // for(uint8_t i = start; i>0; i>>1)
+
     curr = 1;
     for(uint8_t i = 0; i<len; i++) {
         val = curr & data;
@@ -135,26 +135,40 @@ int picoCrystal_display_init(const struct picoCrystal_config_t *pc) {
     gpio_put(pc->rs, 0); // low for command 
     gpio_put(pc->e, 0);
 
-    
-    picoCrystal_gpio_put_data(pc, picoCrystal_INITALIZE); // only send nibble
-    
-    picoCrystal_pulse(pc);
-    sleep_us(picoCrystal_delay);
-
-    picoCrystal_pulse(pc);
-    sleep_us(picoCrystal_delay);
-
-    picoCrystal_pulse(pc);
-    sleep_us(picoCrystal_delay);
-
     if(pc->mode == picoCrystal_MODE_4BIT) {
+        picoCrystal_gpio_put_data(pc, picoCrystal_INITALIZE); // only send nibble
+        
+        picoCrystal_pulse(pc);
+        sleep_us(picoCrystal_delay);
+
+        picoCrystal_pulse(pc);
+        sleep_us(picoCrystal_delay);
+
+        picoCrystal_pulse(pc);
+        sleep_us(picoCrystal_delay);
+
         picoCrystal_gpio_put_data(pc, picoCrystal_MODE_4BIT);
         picoCrystal_pulse(pc);
         sleep_us(picoCrystal_delay);
+
+        picoCrystal_write_data(pc, picoCrystal_CONFIG | pc->num_lines, 0);
+        sleep_us(picoCrystal_delay);
+    } else {
+        sleep_us(50000);
+
+        picoCrystal_write_data(pc, picoCrystal_CONFIG | 0x10, 0);
+        sleep_us(4500);
+
+        picoCrystal_write_data(pc, picoCrystal_CONFIG | 0x10, 0);
+        sleep_us(150);
+
+        picoCrystal_write_data(pc, picoCrystal_CONFIG | 0x10, 0);
+        sleep_us(150);
+
+        picoCrystal_write_data(pc, picoCrystal_CONFIG | 0x10| pc->num_lines, 0);
+        sleep_us(picoCrystal_delay);
+
     }
-    
-    picoCrystal_write_data(pc, picoCrystal_CONFIG | pc->num_lines, 0);
-    sleep_us(picoCrystal_delay);
 
     picoCrystal_write_data(pc, picoCrystal_DISPLAY | picoCrystal_DISPLAY_ON, 0);
     sleep_us(picoCrystal_delay);
