@@ -1,5 +1,4 @@
 #include "picoCrystal.h"
-#include "pico/stdlib.h"
 
 int main() {
     struct picoCrystal_config_t lcd = {
@@ -13,19 +12,11 @@ int main() {
 
     picoCrystal_config_init(&lcd);
     picoCrystal_display_init(&lcd);
+    
     picoCrystal_write_text(&lcd, "Howdy!", 8);
 
-    picoCrystal_move_cursor(&lcd, 1, 0);
+    picoCrystal_move_cursor(&lcd, 1, 0); // move to start of second row
     picoCrystal_write_text(&lcd, "What's up?", 11);
-
-    //picoCrystal_write_data(&lcd, picoCrystal_ENTRY | picoCrystal_ENTRY_INC, 0);
-
-    //picoCrystal_cursor_setting(&lcd, 1, 1);
-
-    for(int i=0; i<100; i++) {
-        picoCrystal_display_shift(&lcd, 1);
-        sleep_us(1000000);
-    }
 
     return 0;
 }
