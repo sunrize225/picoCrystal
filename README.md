@@ -1,8 +1,7 @@
 # picoCrystal
 single header C library for using LCD displays with Pi Pico
 
-- 4 bit mode working
-- 8 bit mode in progress
+- 4 bit mode & 8 bit mode tested on 1602a display
 
 ## How to use this library
 
@@ -22,8 +21,7 @@ The struct has the following attriubtes and values
 | .text_dir       | `picoCrystal_ENTRY_LEFT` or `picoCrystal_ENTRY_RIGHT` |
 
 4. Pass your struct into `picoCrystal_config_init` then call `picoCrystal_display_init`, passing in the struct as well.
-5. The three most important functions are:
+5. You are now ready to control your LCD display. Remember to always pass your struct as the first parameter into the function. The three most important functions are:
 - `int picoCrystal_move_cursor(const struct picoCrystal_config_t *pc, uint8_t row, uint8_t col)` <br> row and col index start at 0. For single row displays, row should always be 0.
 - `void picoCrystal_write_text(const struct picoCrystal_config_t *pc, const char* str, uint8_t len)` <br> This will write text at cursor position.
 - `void picoCrystal_display_clear(const struct picoCrystal_config_t *pc)` <br> clears screen and sets cursor back to home position.
-
