@@ -1,5 +1,4 @@
 #include "picoCrystal.h"
-#include "pico/stdlib.h"
 
 int main() {
     struct picoCrystal_config_t lcd = {
